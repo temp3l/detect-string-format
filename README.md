@@ -3,6 +3,24 @@
 - Takes an Array of Strings and returns an array of formats when all strings match
 - Uses AJV: https://github.com/epoberezkin/ajv
 
+## installation
+
+```bash
+
+yarn add detect-string-format
+
+import schemaUtils from "schema-utilsss";
+
+```
+
+### usage
+
+```ts
+fastFormatter(["0.0.0.0", "127.0.0.53", "127.0.0.1"]);
+
+returnFormatDetector(stringFormats, ajvOptions);
+```
+
 ## enabled by default
 
 ```ts
