@@ -30,32 +30,56 @@ const sampleSchemas: JSONSchema7[] = [
   ...defaultFormats.map((format): JSONSchema7 => ({ type: "string", format }))
 ];
 
-export const returnFormats = (values: string[], schemas = sampleSchemas, options = ajvOptions) => {
+// export const returnFormats = (values: string[], schemas = sampleSchemas, options = ajvOptions) => {
+//   const instances = getInstances({ schemas, options });
+//   return instances
+//     .map((validate, i) => {
+//       const passed = values.map((data: string) => validate(data));
+//       const allMatch = passed.filter(onlyUnique);
+//       if (schemas && allMatch.length === 1 && allMatch[0] === true) return schemas[i];
+//     })
+//     .filter(d => d);
+// };
+
+// let fastFormatter = returnFormatDetector(sampleSchemas, ajvOptions); // returns a function
+// fastFormatter(["fe00::0", "ff02::3", "2001:0db8:85a3:0000:0000:8a2e:0370:7334", "fe80::f2de:f1ff:fe55:53"]) // returns the formats
+export const returnFormatDetector = (schemas = sampleSchemas, options = ajvOptions) => {
   const instances = getInstances({ schemas, options });
-  return instances
-    .map((validate, i) => {
-      const passed = values.map((data: string) => validate(data));
-      const allMatch = passed.filter(onlyUnique);
-      if (schemas && allMatch.length === 1 && allMatch[0] === true) return schemas[i];
-    })
-    .filter(d => d);
+  return (values: string[]) => {
+    return instances
+      .map((validate, i) => {
+        const passed = values.map((data: string) => validate(data));
+        const allMatch = passed.filter(onlyUnique);
+        if (schemas && allMatch.length === 1 && allMatch[0] === true) return schemas[i];
+      })
+      .filter(d => d);
+  };
 };
 
+// let start = Date.now();
+// let fastFormatter = returnFormatDetector(sampleSchemas, ajvOptions);
+// let res = [];
+// for (var i = 0; i < 1000; i++) {
+//   res.push(fastFormatter(["fe00::0", "ff02::3", "2001:0db8:85a3:0000:0000:8a2e:0370:7334", "fe80::f2de:f1ff:fe55:53", "https://www.example.com/foo/?bar=baz&inga=42&quux", "http://-.~_!$&'()*+,;=:%40:80%2f::::::@example.com", "http://foo.com/unicode_(✪)_in_parens", "https://github.com/epoberezkin/ajv/blob/master/lib/compile/formats.js", "https://www.example.com/foo/?bar=baz&inga=42&quux", "http://-.~_!$&'()*+,;=:%40:80%2f::::::@example.com", "http://foo.com/unicode_(✪)_in_parens", "https://github.com/epoberezkin/ajv/blob/master/lib/compile/formats.js",]));
+// }
+// console.log({ elapsed: Date.now() - start });
+
 // Samples
+// let fastFormatter = returnFormatDetector(sampleSchemas, ajvOptions); // returns a function
 // console.log({
-//   urlsFormat: returnFormats(["https://www.example.com/foo/?bar=baz&inga=42&quux", "http://-.~_!$&'()*+,;=:%40:80%2f::::::@example.com", "http://foo.com/unicode_(✪)_in_parens", "https://github.com/epoberezkin/ajv/blob/master/lib/compile/formats.js"]),
+//   urlsFormat: fastFormatter(["https://www.example.com/foo/?bar=baz&inga=42&quux", "http://-.~_!$&'()*+,;=:%40:80%2f::::::@example.com", "http://foo.com/unicode_(✪)_in_parens", "https://github.com/epoberezkin/ajv/blob/master/lib/compile/formats.js"]),
 
-//   ipv4: returnFormats(["0.0.0.0", "127.0.0.53", "127.0.0.1", "192.168.1.13", "0.0.0.0", "1.2.3.4"]),
-//   ipv6: returnFormats(["fe00::0", "ff02::3", "2001:0db8:85a3:0000:0000:8a2e:0370:7334", "fe80::f2de:f1ff:fe55:53"]),
+//   ipv4: fastFormatter(["0.0.0.0", "127.0.0.53", "127.0.0.1", "192.168.1.13", "0.0.0.0", "1.2.3.4"]),
+//   ipv6: fastFormatter(["fe00::0", "ff02::3", "2001:0db8:85a3:0000:0000:8a2e:0370:7334", "fe80::f2de:f1ff:fe55:53"]),
 
-//   dates: returnFormats(["1963-06-19", "2020-10-02"]),
-//   dateTime: returnFormats(["12:34:56.789", "12:34:56+01:00", "12:34:56"]),
+//   dates: fastFormatter(["1963-06-19", "2020-10-02"]),
+//   dateTime: fastFormatter(["12:34:56.789", "12:34:56+01:00", "12:34:56"]),
 
-//   TelPass: returnFormats(["555-1212", "(888)555-1212"]),
-//   TelFail: returnFormats(["(888)555-1212 ext. 532", "(800)FLOWERS"]),
+//   TelPass: fastFormatter(["555-1212", "(888)555-1212"]),
+//   TelFail: fastFormatter(["(888)555-1212 ext. 532", "(800)FLOWERS"]),
 
-//   URI: returnFormats(["scheme:[//authority]path[?query][#fragment]", "https://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newest#top", "#fragment"]),
-//   someString: returnFormats(["foo", "bar", "baz"])
+//   URI: fastFormatter(["scheme:[//authority]path[?query][#fragment]", "https://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newest#top", "#fragment"]),
+//   someString: fastFormatter(["foo", "bar", "baz"])
 // });
 
 /*
