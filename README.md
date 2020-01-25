@@ -16,9 +16,9 @@ import schemaUtils from "schema-utilsss";
 ### usage
 
 ```ts
-fastFormatter(["0.0.0.0", "127.0.0.53", "127.0.0.1"]);
+const fastDetect = returnFormatDetector(stringFormats, ajvOptions);
 
-returnFormatDetector(stringFormats, ajvOptions);
+fastDetect(["0.0.0.0", "127.0.0.53", "127.0.0.1"]);
 ```
 
 ## enabled by default
