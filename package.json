@@ -1,9 +1,9 @@
 {
   "name": "detect-stering-format",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "guess format from array of String",
   "main": "./dist/index.js",
-  "author": "steph",
+  "author": "stephan Rebien",
   "license": "MIT",
   "private": false,
   "dependencies": {
