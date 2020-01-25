@@ -1,0 +1,34 @@
+// {
+//   // "eslint.autoFixOnSave": true, // has been deprecated, use editor.codeActionsOnSave instead
+//   "editor.codeActionsOnSave": {
+//     "source.fixAll.eslint": true
+//   },
+//   "eslint.validate": [
+//     "javascript",
+//     "javascriptreact",
+//     { "language": "typescript", "autoFix": true },
+//     { "language": "typescriptreact", "autoFix": true }
+//   ]
+// }
+
+{
+  "editor.rulers": [180],
+  "editor.tabCompletion": "on",
+  "editor.tabSize": 2,
+  "editor.trimAutoWhitespace": true,
+  "editor.formatOnSave": true,
+
+  "files.exclude": {
+    "**/.DS_Store": true,
+    "**/.git": true,
+    "**/.hg": true,
+    "**/.svn": true,
+    "**/CVS": true,
+    "dist": true,
+    "**/node_modules": true // this excludes all folders
+  },
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+
+  "typescript.tsdk": "./node_modules/typescript/lib"
+}

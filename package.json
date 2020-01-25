@@ -1,0 +1,31 @@
+{
+  "name": "detect-stering-format",
+  "version": "0.0.2",
+  "description": "guess format from array of String",
+  "main": "./dist/index.js",
+  "author": "steph",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "@types/lodash": "^4.14.149",
+    "ts-node-dev": "^1.0.0-pre.44",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.4"
+  },
+  "devDependencies": {
+    "@types/node": "^13.1.6",
+    "@typescript-eslint/eslint-plugin": "^2.15.0",
+    "@typescript-eslint/parser": "^2.15.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "prettier": "^1.19.1"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "start": "ts-node-dev --respawn --transpileOnly ./index.ts",
+    "prod": "tsc && node ./build/app.js",
+    "lint": "tsc --noEmit && eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
+    "build": "tsc"
+  }
+}
