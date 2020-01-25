@@ -1,23 +1,23 @@
 import Ajv from "ajv";
-import { type } from "os";
 
 //  See: https://github.com/epoberezkin/ajv for more information!
 
 // detected-formats:
-let allFormats: any = ["date", "time", "date-time", "uri", "url", "email", "ipv4", "ipv6", "uuid"];
+let enabled: any = ["date", "time", "date-time", "uri", "url", "email", "ipv4", "ipv6", "uuid"];
 
 // you can enable more Formats, like:
 //  [ "hostname", "json-pointer", "json-pointer-uri-fragment", "relative-json-pointer", "uri-reference", "regex" ]
 
 // or write your own patterns:
 // The following example matches a simple North American telephone number with an optional area code:
+
 const customSchemas = [
   {
     type: "string",
     pattern: "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$"
   }
 ];
-allFormats = [...allFormats, ...customSchemas];
+const allFormats = [...enabled, ...customSchemas];
 
 const options: Ajv.Options = {
   allErrors: true,
@@ -73,6 +73,5 @@ console.log({
     URI: [],
     someString: [],
     someInts: [],
-    borked: []
   }
 */
