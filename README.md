@@ -82,11 +82,11 @@ console.log({
 
 ```ts
 let result = {
-  urlsFormat: ["url"],
-  ipv4: ["ipv4"],
-  ipv6: ["ipv6"],
-  dates: ["date"],
-  dateTime: ["time"],
+  urlsFormat: [{ type: "string", format: "url" }],
+  ipv4: [{ type: "string", format: "ipv4" }],
+  ipv6: [{ type: "string", format: "ipv6" }],
+  dates: [{ type: "string", format: "date" }],
+  dateTime: [{ type: "string", format: "time" }],
   TelPass: [{ type: "string", pattern: "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$" }],
   TelFail: [],
   URI: [],
