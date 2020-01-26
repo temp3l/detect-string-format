@@ -81,19 +81,17 @@ console.log({
 ## Sample output
 
 ```ts
-{
-  urlsFormat: [ 'url' ],
-  ipv4: [ 'ipv4' ],
-  ipv6: [ 'ipv6' ],
-  dates: [ 'date' ],
-  dateTime: [ 'time' ],
-  TelPass: [
-    { type: 'string', pattern: '^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$' }
-  ],
+let result = {
+  urlsFormat: ["url"],
+  ipv4: ["ipv4"],
+  ipv6: ["ipv6"],
+  dates: ["date"],
+  dateTime: ["time"],
+  TelPass: [{ type: "string", pattern: "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$" }],
   TelFail: [],
   URI: [],
   someString: []
-}
+};
 ```
 
 ## See test folder for more example code
