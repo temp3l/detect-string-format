@@ -9,7 +9,7 @@
 
 yarn add detect-string-format
 
-import schemaUtils from "schema-utilsss";
+import returnFormatDetector from "detect-string-format";
 
 ```
 
@@ -18,7 +18,7 @@ import schemaUtils from "schema-utilsss";
 ```ts
 const fastDetect = returnFormatDetector(stringFormats, ajvOptions);
 
-fastDetect(["0.0.0.0", "127.0.0.53", "127.0.0.1"]);
+const formats: any[] = fastDetect(["0.0.0.0", "127.0.0.53", "127.0.0.1"]);
 ```
 
 ## enabled by default
