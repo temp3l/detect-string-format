@@ -23,10 +23,9 @@ const defaultFormats = ["date", "time", "date-time", "uri", "url", "email", "ipv
 // See https://json-schema.org/ for more information
 const sampleSchemas = [
     {
-        type: "string",
         pattern: "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$"
     },
-    ...defaultFormats.map((format) => ({ type: "string", format }))
+    ...defaultFormats.map((format) => ({ format }))
 ];
 // export const returnFormats = (values: string[], schemas = sampleSchemas, options = ajvOptions) => {
 //   const instances = getInstances({ schemas, options });

@@ -24,10 +24,9 @@ const defaultFormats: string[] = ["date", "time", "date-time", "uri", "url", "em
 // See https://json-schema.org/ for more information
 const sampleSchemas: JSONSchema7[] = [
   {
-    type: "string",
     pattern: "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$"
   },
-  ...defaultFormats.map((format): JSONSchema7 => ({ type: "string", format }))
+  ...defaultFormats.map((format): JSONSchema7 => ({ format }))
 ];
 
 // export const returnFormats = (values: string[], schemas = sampleSchemas, options = ajvOptions) => {
