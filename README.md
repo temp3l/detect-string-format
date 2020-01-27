@@ -16,13 +16,25 @@ import returnFormatDetector from "detect-string-format";
 ### usage
 
 ```ts
-// enabled by default:
-const defaultFormats: JSONSchema7 = ["date", "time", "date-time", "uri", "url", "email", "ipv4", "ipv6", "uuid"].map(format => ({ format }));
 
+// quick start with default formats:
+const fastDetect = returnFormatDetector(); // returns a function
+const formats = fastDetect(["0.0.0.0", "127.0.0.53", "127.0.0.1"]);
+```
+
+## defaults:
+
+```ts
+const defaultFormats: JSONSchema7 = ["date", "time", "date-time", "uri", "url", "email", "ipv4", "ipv6", "uuid"].map(format => ({ format }));
 // you may want to add any of these: 
 // ["hostname", "json-pointer", "json-pointer-uri-fragment", "relative-json-pointer", "uri-reference", "regex"];
 
-// add custom formats/schemas
+```
+
+## add custom formats/schemas
+- The following example matches a simple North American telephone number with an optional area code:
+
+```ts
 const customSchemas: JSONSchema7[] = [
   {
     pattern: "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$"
@@ -34,16 +46,8 @@ const customSchemas: JSONSchema7[] = [
 const options: Ajv.Options = { format: "full" };
 
 // custom schemas/formats:
-const fastDetect = returnFormatDetector(defaultFormats, options);
-
-// default settings:
-const fastDetect = returnFormatDetector();
-const formats: any[] = fastDetect(["0.0.0.0", "127.0.0.53", "127.0.0.1"]);
+const fastDetect = returnFormatDetector(formats, options);
 ```
-
-## adding custom formats and patterns
-
-- The following example matches a simple North American telephone number with an optional area code:
 
 
 ## Sample Usage
