@@ -1,6 +1,7 @@
 # detect-string-formats
 
-- Takes an Array of Strings and returns an array of formats when all strings match
+- Takes an Array of Strings as inputs
+- Gives an Arrray of Formats as output when ALL of the strings match a certain format
 - Uses AJV: https://github.com/epoberezkin/ajv
 
 ## installation
@@ -19,7 +20,7 @@ import returnFormatDetector from "detect-string-format";
 
 // quick start with default formats:
 const fastDetect = returnFormatDetector(); // returns a function
-const formats = fastDetect(["0.0.0.0", "127.0.0.53", "127.0.0.1"]);
+const results = fastDetect(["0.0.0.0", "127.0.0.53", "127.0.0.1"]);
 ```
 
 ## defaults:

@@ -34,7 +34,7 @@ const formats: any[] = fastDetect(["0.0.0.0", "127.0.0.53", "127.0.0.1"]);
 const af = fastDetect(["fe00::0", "ff02::3", "2001:0db8:85a3:0000:0000:8a2e:0370:7334", "fe80::f2de:f1ff:fe55:53"]);
 
 console.log({formats,af});
- */
+
 
 const fastDetect = returnFormatDetector();
 
@@ -53,4 +53,4 @@ console.log({
   URI: fastDetect(["scheme:[//authority]path[?query][#fragment]", "https://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newest#top", "#fragment"]),
   someString: fastDetect(["foo", "bar", "baz"])
 });
-
+ */
