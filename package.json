@@ -1,6 +1,6 @@
 {
   "name": "detect-string-format",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "detect formats from array of String",
   "main": "./dist/index.js",
   "repository": {
