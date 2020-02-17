@@ -9,7 +9,7 @@ const safe_regex_1 = __importDefault(require("safe-regex"));
 //const defaultFormats = require("ajv/lib/compile/formats")('fast'); // https://github.com/epoberezkin/ajv/blob/master/lib/compile/formats.js
 //const sample_data = require("../test/format.json");
 //https://github.com/epoberezkin/ajv/blob/master/spec/typescript/index.ts
-const formats = ['date', 'time', 'date-time', 'uri', 'url', 'email', 'ipv4', 'ipv6', 'uuid', 'json-pointer', 'json-pointer-uri-fragment', 'relative-json-pointer'];
+const formats = ['date', 'time', 'date-time', 'uri', 'email', 'ipv4', 'ipv6', 'uuid', 'json-pointer', 'json-pointer-uri-fragment', 'relative-json-pointer'];
 const schemas = [
     { pattern: "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$", $comment: "American Phone Number" },
     { pattern: "^4[0-9]{12}(?:[0-9]{3})?$", $comment: "Visa Credit Card" },
@@ -42,6 +42,9 @@ const testData = {
     ipv44: 'xxxxx'.repeat(100000).split('').map((x, i) => `ASR§B%B%NDVV192.${i}.1.13`),
     DATE: 'xxxxx'.repeat(500000).split('').map((x, i) => new Date(Date.now() - i).toISOString()),
 };
+//testData.DATE.push("1963-06-19") //
+const { DATE } = testData;
+console.log(DATE);
 let checked = 0;
 const start = Date.now();
 let hits = 0;
@@ -61,4 +64,4 @@ for (let i = 0; i < 3; i++) {
 results.forEach((r) => console.log([r.key, r.res.map((f) => f.format || f.$comment)].join('\t\t')));
 console.log({ matched: results.length, });
 console.log('');
-console.log({ hits, elapsed: Date.now() - start });
+console.log({ hits, elapsed: Date.now() - start, hpS: (hits * 1000) / (Date.now() - start) });

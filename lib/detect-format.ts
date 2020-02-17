@@ -2,15 +2,12 @@ import Ajv from "ajv";
 import { JSONSchema7 } from "json-schema";
 import isSafeRegex from 'safe-regex';
 
-export const defaultFormats = require("ajv/lib/compile/formats")('full'); // https://github.com/epoberezkin/ajv/blob/master/lib/compile/formats.js
-
 const getInstances = ({ schemas, options }: { schemas: JSONSchema7[]; options: Ajv.Options }) => schemas.map(schema => new Ajv(options).compile(schema));
 
+export const defaultFormats = require("ajv/lib/compile/formats")('full'); // https://github.com/epoberezkin/ajv/blob/master/lib/compile/formats.js
 
-export type FormatOptions = {
-  schemas?: JSONSchema7[];
-  options?: any;
-}
+export type FormatOptions = { schemas?: JSONSchema7[]; options?: any; }
+
 export default ({schemas, options}: FormatOptions) => {
   const _schemas: JSONSchema7[] = schemas || ["date", "time", "date-time", "uri", "url", "email", "ipv4", "ipv6", "uuid"].map(format => ({format}));
   const _options: any = options || { format: 'fast', minHits: 0 };
@@ -18,7 +15,7 @@ export default ({schemas, options}: FormatOptions) => {
   return (values: string[]) => { // this functions gets exported and accepts arrays of strings as input!
     return instances.map((validate, i) => {
       if(_options.minHits && _options.minHits > 0 && _options.minHits > values.length)  return null; // minimum sample size
-      return values.some((data: string) => validate(data) ) ?  Object.assign({},_schemas[i], { hits: values.length }) : null;
+      return values.some((data: string) => !validate(data) ) ?  null : Object.assign({},_schemas[i], { hits: values.length });
     }).filter(d => d!==null);
   };
 };
