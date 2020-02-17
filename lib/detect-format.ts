@@ -1,23 +1,28 @@
 import Ajv from "ajv";
 import { JSONSchema7 } from "json-schema";
-//const defaultFormats = require("ajv/lib/compile/formats")('full'); // https://github.com/epoberezkin/ajv/blob/master/lib/compile/formats.js
+import isSafeRegex from 'safe-regex';
+
+export const defaultFormats = require("ajv/lib/compile/formats")('full'); // https://github.com/epoberezkin/ajv/blob/master/lib/compile/formats.js
 
 const getInstances = ({ schemas, options }: { schemas: JSONSchema7[]; options: Ajv.Options }) => schemas.map(schema => new Ajv(options).compile(schema));
 
+
 export type FormatOptions = {
   schemas?: JSONSchema7[];
-  options?: Ajv.Options;
+  options?: any;
 }
 export default ({schemas, options}: FormatOptions) => {
   const _schemas: JSONSchema7[] = schemas || ["date", "time", "date-time", "uri", "url", "email", "ipv4", "ipv6", "uuid"].map(format => ({format}));
-  const _options: Ajv.Options = options || { format: 'fast' };
+  const _options: any = options || { format: 'fast', minHits: 0 };
   const instances = getInstances({ schemas: _schemas, options: _options });
   return (values: string[]) => { // this functions gets exported and accepts arrays of strings as input!
     return instances.map((validate, i) => {
-      return values.some((data: string) => validate(data) ) ?  _schemas[i] : null;
+      if(_options.minHits && _options.minHits > 0 && _options.minHits > values.length)  return null; // minimum sample size
+      return values.some((data: string) => validate(data) ) ?  Object.assign({},_schemas[i], { hits: values.length }) : null;
     }).filter(d => d!==null);
   };
 };
+
 /*
 const defaultFormats: string[] = ["date", "time", "date-time", "uri", "url", "email", "ipv4", "ipv6", "uuid"];
 const customSchemas: JSONSchema7[] = [
@@ -28,11 +33,8 @@ const customSchemas: JSONSchema7[] = [
   { pattern: "^DE([0-9a-zA-Z]\s?){20}$", $comment: "IBANN",},
   ...defaultFormats.map(format => ({ format }))
 ];
-
 const fastDetect = returnFormatDetector(customSchemas, );
-
 //const fastDetect = returnFormatDetector();
-
 console.log({
   urlsFormat: fastDetect(["https://www.example.com/foo/?bar=baz&inga=42&quux", "http://-.~_!$&'()*+,;=:%40:80%2f::::::@example.com", "http://foo.com/unicode_(✪)_in_parens", "https://github.com/epoberezkin/ajv/blob/master/lib/compile/formats.js"]),
 

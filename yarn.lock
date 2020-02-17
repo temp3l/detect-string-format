@@ -40,6 +40,11 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-13.7.1.tgz#238eb34a66431b71d2aaddeaa7db166f25971a0d"
   integrity sha512-Zq8gcQGmn4txQEJeiXo/KiLpon8TzAl0kmKH4zdWctPj05nWwp1ClMdAVEloqrQKfaC48PNLdgN/aVaLqUrluA==
 
+"@types/safe-regex@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@types/safe-regex/-/safe-regex-1.1.2.tgz#0434f128255fe79c34ff21ffd18c706b2bad8856"
+  integrity sha512-wuS9LVpgIiTYaGKd+s6Dj0kRXBkttaXjVxzaXmviCACi8RO+INPayND+VNjAcall/l1Jkyhh9lyPfKW/aP/Yug==
+
 "@types/strip-bom@^3.0.0":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@types/strip-bom/-/strip-bom-3.0.0.tgz#14a8ec3956c2e81edb7520790aecf21c290aebd2"
@@ -1007,6 +1012,11 @@ redent@^1.0.0:
     indent-string "^2.1.0"
     strip-indent "^1.0.1"
 
+regexp-tree@~0.1.1:
+  version "0.1.19"
+  resolved "https://registry.yarnpkg.com/regexp-tree/-/regexp-tree-0.1.19.tgz#9326e91d8d1d23298dd33a78cf5e788f57cdc359"
+  integrity sha512-mVeVLF/qg5qFbZSW0f7pXbuVX73dKIjuhOyC2JLKxzmpya75O4qLcvI9j0jp31Iz7IAkEVHa1UErDCAqaLKo5A==
+
 regexpp@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/regexpp/-/regexpp-2.0.1.tgz#8d19d31cf632482b589049f8281f93dbcba4d07f"
@@ -1071,6 +1081,13 @@ rxjs@^6.5.3:
   integrity sha512-naMQXcgEo3csAEGvw/NydRA0fuS2nDZJiw1YUWFKU7aPPAPGZEsD4Iimit96qwCieH6y614MCLYwdkrWx7z/7Q==
   dependencies:
     tslib "^1.9.0"
+
+safe-regex@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/safe-regex/-/safe-regex-2.1.1.tgz#f7128f00d056e2fe5c11e81a1324dd974aadced2"
+  integrity sha512-rx+x8AMzKb5Q5lQ95Zoi6ZbJqwCLkqi3XuJXp5P3rT8OEc6sZCJG5AE5dU3lsgRr/F4Bs31jSlVN+j5KrsGu9A==
+  dependencies:
+    regexp-tree "~0.1.1"
 
 "safer-buffer@>= 2.1.2 < 3":
   version "2.1.2"

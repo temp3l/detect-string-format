@@ -19,7 +19,7 @@ import returnFormatDetector from "detect-string-format";
 ```ts
 
 // quick start with default formats:
-const fastDetect = returnFormatDetector(); // returns a function
+const fastDetect = returnFormatDetector({}); // returns a function
 const results = fastDetect(["0.0.0.0", "127.0.0.53", "127.0.0.1"]);
 ```
 
@@ -47,7 +47,7 @@ const customSchemas: JSONSchema7[] = [
 const options: Ajv.Options = { format: "full" };
 
 // custom schemas/formats:
-const fastDetect = returnFormatDetector(formats, options);
+const fastDetect:Function = returnFormatDetector({schemas, options: { format: 'full' }}); // full|fast
 ```
 
 
@@ -56,7 +56,7 @@ const fastDetect = returnFormatDetector(formats, options);
 ```ts
 // just call returnFormats and pass an arry of strings!
 
-const fastDetect = returnFormatDetector();
+const fastDetect = returnFormatDetector({});
 
 console.log({
   urlsFormat: fastDetect(["https://www.example.com/foo/?bar=baz&inga=42&quux", "http://-.~_!$&'()*+,;=:%40:80%2f::::::@example.com", "http://foo.com/unicode_(✪)_in_parens", "https://github.com/epoberezkin/ajv/blob/master/lib/compile/formats.js"]),
@@ -90,12 +90,6 @@ let result = {
   someString: []
 };
 ```
-
-## AJV Custom Formats
-
-* AJV has the ability to specify custom formats: https://github.com/epoberezkin/ajv#formats
-* Theses Formats are beeing used for validating payloads against a schema, like: `{ title: 'foo', format: 'email' }`
-
 
 
 ## See test folder for more example code

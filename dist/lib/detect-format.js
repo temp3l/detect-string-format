@@ -4,15 +4,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const ajv_1 = __importDefault(require("ajv"));
-//const defaultFormats = require("ajv/lib/compile/formats")('full'); // https://github.com/epoberezkin/ajv/blob/master/lib/compile/formats.js
+exports.defaultFormats = require("ajv/lib/compile/formats")('full'); // https://github.com/epoberezkin/ajv/blob/master/lib/compile/formats.js
 const getInstances = ({ schemas, options }) => schemas.map(schema => new ajv_1.default(options).compile(schema));
 exports.default = ({ schemas, options }) => {
     const _schemas = schemas || ["date", "time", "date-time", "uri", "url", "email", "ipv4", "ipv6", "uuid"].map(format => ({ format }));
-    const _options = options || { format: 'fast' };
+    const _options = options || { format: 'fast', minHits: 0 };
     const instances = getInstances({ schemas: _schemas, options: _options });
     return (values) => {
         return instances.map((validate, i) => {
-            return values.some((data) => validate(data)) ? _schemas[i] : null;
+            if (_options.minHits && _options.minHits > 0 && _options.minHits > values.length)
+                return null; // minimum sample size
+            return values.some((data) => validate(data)) ? Object.assign({}, _schemas[i], { hits: values.length }) : null;
         }).filter(d => d !== null);
     };
 };
@@ -26,11 +28,8 @@ const customSchemas: JSONSchema7[] = [
   { pattern: "^DE([0-9a-zA-Z]\s?){20}$", $comment: "IBANN",},
   ...defaultFormats.map(format => ({ format }))
 ];
-
 const fastDetect = returnFormatDetector(customSchemas, );
-
 //const fastDetect = returnFormatDetector();
-
 console.log({
   urlsFormat: fastDetect(["https://www.example.com/foo/?bar=baz&inga=42&quux", "http://-.~_!$&'()*+,;=:%40:80%2f::::::@example.com", "http://foo.com/unicode_(✪)_in_parens", "https://github.com/epoberezkin/ajv/blob/master/lib/compile/formats.js"]),
 
