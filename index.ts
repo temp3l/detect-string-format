@@ -1,3 +1,2 @@
-import { returnFormatDetector } from "./lib/detect-format";
-
+import returnFormatDetector  from "./lib/detect-format";
 export default returnFormatDetector;

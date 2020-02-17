@@ -1,28 +1,26 @@
 import Ajv from "ajv";
 import { JSONSchema7 } from "json-schema";
-
-//  See: https://github.com/epoberezkin/ajv for more information!
+//const defaultFormats = require("ajv/lib/compile/formats")('full'); // https://github.com/epoberezkin/ajv/blob/master/lib/compile/formats.js
 
 const getInstances = ({ schemas, options }: { schemas: JSONSchema7[]; options: Ajv.Options }) => schemas.map(schema => new Ajv(options).compile(schema));
 
-
-export const returnFormatDetector = (schemas?:JSONSchema7[], options?:Ajv.Options) => {
+export type FormatOptions = {
+  schemas?: JSONSchema7[];
+  options?: Ajv.Options;
+}
+export default ({schemas, options}: FormatOptions) => {
   const _schemas: JSONSchema7[] = schemas || ["date", "time", "date-time", "uri", "url", "email", "ipv4", "ipv6", "uuid"].map(format => ({format}));
-  const _options: Ajv.Options = options || {format: 'full'};
+  const _options: Ajv.Options = options || { format: 'fast' };
   const instances = getInstances({ schemas: _schemas, options: _options });
-  return (values: string[]) => {
-    return instances
-      .map((validate, i) => {
-        const passed = values.map((data: string) => validate(data));
-        return passed.length > 0 && passed.indexOf(false) === -1 ? _schemas[i] : false;   
-      })
-      .filter(d => d);
+  return (values: string[]) => { // this functions gets exported and accepts arrays of strings as input!
+    return instances.map((validate, i) => {
+      return values.some((data: string) => validate(data) ) ?  _schemas[i] : null;
+    }).filter(d => d!==null);
   };
 };
 /*
 const defaultFormats: string[] = ["date", "time", "date-time", "uri", "url", "email", "ipv4", "ipv6", "uuid"];
 const customSchemas: JSONSchema7[] = [
-  { pattern: "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$" },
   { pattern: "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$", $comment: "American Phone Number" },
   { pattern: "^4[0-9]{12}(?:[0-9]{3})?$", $comment: "Visa Credit Card" },
   { pattern: "^3[47][0-9]{13}$", $comment: "American Express Credit Card" },

@@ -4,25 +4,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const ajv_1 = __importDefault(require("ajv"));
-//  See: https://github.com/epoberezkin/ajv for more information!
+//const defaultFormats = require("ajv/lib/compile/formats")('full'); // https://github.com/epoberezkin/ajv/blob/master/lib/compile/formats.js
 const getInstances = ({ schemas, options }) => schemas.map(schema => new ajv_1.default(options).compile(schema));
-exports.returnFormatDetector = (schemas, options) => {
+exports.default = ({ schemas, options }) => {
     const _schemas = schemas || ["date", "time", "date-time", "uri", "url", "email", "ipv4", "ipv6", "uuid"].map(format => ({ format }));
-    const _options = options || { format: 'full' };
+    const _options = options || { format: 'fast' };
     const instances = getInstances({ schemas: _schemas, options: _options });
     return (values) => {
-        return instances
-            .map((validate, i) => {
-            const passed = values.map((data) => validate(data));
-            return passed.length > 0 && passed.indexOf(false) === -1 ? _schemas[i] : false;
-        })
-            .filter(d => d);
+        return instances.map((validate, i) => {
+            return values.some((data) => validate(data)) ? _schemas[i] : null;
+        }).filter(d => d !== null);
     };
 };
 /*
 const defaultFormats: string[] = ["date", "time", "date-time", "uri", "url", "email", "ipv4", "ipv6", "uuid"];
 const customSchemas: JSONSchema7[] = [
-  { pattern: "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$" },
   { pattern: "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$", $comment: "American Phone Number" },
   { pattern: "^4[0-9]{12}(?:[0-9]{3})?$", $comment: "Visa Credit Card" },
   { pattern: "^3[47][0-9]{13}$", $comment: "American Express Credit Card" },

@@ -91,4 +91,11 @@ let result = {
 };
 ```
 
+## AJV Custom Formats
+
+* AJV has the ability to specify custom formats: https://github.com/epoberezkin/ajv#formats
+* Theses Formats are beeing used for validating payloads against a schema, like: `{ title: 'foo', format: 'email' }`
+
+
+
 ## See test folder for more example code
