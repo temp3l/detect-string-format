@@ -1,22 +1,20 @@
-import Ajv from "ajv";
-import { JSONSchema7 } from "json-schema";
-import isSafeRegex from 'safe-regex';
-
+import Ajv from 'ajv';
+import { JSONSchema7 } from 'json-schema';
 const getInstances = ({ schemas, options }: { schemas: JSONSchema7[]; options: Ajv.Options }) => schemas.map(schema => new Ajv(options).compile(schema));
 
-export const defaultFormats = require("ajv/lib/compile/formats")('full'); // https://github.com/epoberezkin/ajv/blob/master/lib/compile/formats.js
+export const defaultFormats = require('ajv/lib/compile/formats')('full'); // https://github.com/epoberezkin/ajv/blob/master/lib/compile/formats.js
 
-export type FormatOptions = { schemas?: JSONSchema7[]; options?: any; }
+export type FormatOptions = { schemas?: JSONSchema7[]; options?: any };
 
-export default ({schemas, options}: FormatOptions) => {
-  const _schemas: JSONSchema7[] = schemas || ["date", "time", "date-time", "uri", "url", "email", "ipv4", "ipv6", "uuid"].map(format => ({format}));
+export default ({ schemas, options }: FormatOptions) => {
+  const _schemas: JSONSchema7[] = schemas || ['date', 'time', 'date-time', 'uri', 'url', 'email', 'ipv4', 'ipv6', 'uuid'].map(format => ({ format }));
   const _options: any = options || { format: 'fast', minHits: 0 };
   const instances = getInstances({ schemas: _schemas, options: _options });
-  return (values: string[]) => { // this functions gets exported and accepts arrays of strings as input!
+  return (values: string[]) => {
     return instances.map((validate, i) => {
-      if(_options.minHits && _options.minHits > 0 && _options.minHits > values.length)  return null; // minimum sample size
-      return values.some((data: string) => !validate(data) ) ?  null : Object.assign({},_schemas[i], { hits: values.length });
-    }).filter(d => d!==null);
+        if (_options.minHits && _options.minHits > 0 && _options.minHits > values.length) return null; // minimum sample size
+        return values.some((data: string) => !validate(data)) ? null : Object.assign({},_schemas[i], { hits: values.length });
+      }).filter(d => d !== null);
   };
 };
 
@@ -43,7 +41,7 @@ console.log({
 
   ame: fastDetect(["378734493671000"]),
   iban: fastDetect(["DE64500105178934265523"]),
-  
+
   TelPass: fastDetect(["555-1212", "(888)555-1212"]),
   TelFail: fastDetect(["(888)555-1212 ext. 532", "(800)FLOWERS"]),
 

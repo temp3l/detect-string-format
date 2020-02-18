@@ -4,18 +4,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const ajv_1 = __importDefault(require("ajv"));
-exports.defaultFormats = require("ajv/lib/compile/formats")('full'); // https://github.com/epoberezkin/ajv/blob/master/lib/compile/formats.js
 const getInstances = ({ schemas, options }) => schemas.map(schema => new ajv_1.default(options).compile(schema));
+exports.defaultFormats = require('ajv/lib/compile/formats')('full'); // https://github.com/epoberezkin/ajv/blob/master/lib/compile/formats.js
 exports.default = ({ schemas, options }) => {
-    const _schemas = schemas || ["date", "time", "date-time", "uri", "url", "email", "ipv4", "ipv6", "uuid"].map(format => ({ format }));
+    const _schemas = schemas || ['date', 'time', 'date-time', 'uri', 'url', 'email', 'ipv4', 'ipv6', 'uuid'].map(format => ({ format }));
     const _options = options || { format: 'fast', minHits: 0 };
     const instances = getInstances({ schemas: _schemas, options: _options });
     return (values) => {
-        return instances.map((validate, i) => {
+        // this functions gets exported and accepts arrays of strings as input!
+        //prettier-ignore
+        return instances
+            .map((validate, i) => {
             if (_options.minHits && _options.minHits > 0 && _options.minHits > values.length)
                 return null; // minimum sample size
-            return values.some((data) => validate(data)) ? Object.assign({}, _schemas[i], { hits: values.length }) : null;
-        }).filter(d => d !== null);
+            return values.some((data) => {
+                return !validate(data);
+            }) ? null : Object.assign({}, _schemas[i], { hits: values.length });
+        })
+            .filter(d => d !== null);
     };
 };
 /*
@@ -41,11 +47,11 @@ console.log({
 
   ame: fastDetect(["378734493671000"]),
   iban: fastDetect(["DE64500105178934265523"]),
-  
+
   TelPass: fastDetect(["555-1212", "(888)555-1212"]),
   TelFail: fastDetect(["(888)555-1212 ext. 532", "(800)FLOWERS"]),
 
   URI: fastDetect(["scheme:[//authority]path[?query][#fragment]", "https://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newest#top", "#fragment"]),
   someString: fastDetect(["foo", "bar", "baz"])
 });
-*/ 
+*/

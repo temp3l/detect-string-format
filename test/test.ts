@@ -33,6 +33,7 @@ const fastDetect:Function = returnFormatDetector({schemas, options: { format: 'f
 // false - ignore all format keywords.
 
 const sampleSize = 500*1000;
+
 const testData:any = {
   urlst: ["https://www.example.com/foo/?bar=baz&inga=42&quux", "http://-.~_!$&'()*+,;=:%40:80%2f::::::@example.com", "http://foo.com/unicode_(✪)_in_parens", "https://github.com/epoberezkin/ajv/blob/master/lib/compile/formats.js"],
   urlst2: 'x'.repeat(sampleSize).split('').map( (x,i)=> `https://www.example.com${i}fdst4ljeflajtl4q5h5kqjhkltjhklsjdhflkdjhflb46${x}n6e` ),
@@ -52,8 +53,8 @@ const testData:any = {
   //uris: new Array(100000).fill('https://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newest#tophttps://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newest#tophttps://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newest#tophttps://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newest#tophttps://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newest#top')
 };
 // testData.DATE.push("1963-06-19") // no format
-testData.DATE.push("2020-02-17T19:06:11.736Z") // no format
-// 
+//testData.DATE.push("2020-02-17T19:06:11.736Z") // no format
+//
 //const {DATE} =  testData;
 //console.log(DATE);
 
