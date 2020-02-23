@@ -11,17 +11,11 @@ exports.default = ({ schemas, options }) => {
     const _options = options || { format: 'fast', minHits: 0 };
     const instances = getInstances({ schemas: _schemas, options: _options });
     return (values) => {
-        // this functions gets exported and accepts arrays of strings as input!
-        //prettier-ignore
-        return instances
-            .map((validate, i) => {
+        return instances.map((validate, i) => {
             if (_options.minHits && _options.minHits > 0 && _options.minHits > values.length)
                 return null; // minimum sample size
-            return values.some((data) => {
-                return !validate(data);
-            }) ? null : Object.assign({}, _schemas[i], { hits: values.length });
-        })
-            .filter(d => d !== null);
+            return values.some((data) => !validate(data)) ? null : _schemas[i]; // Object.assign({},_schemas[i], { hits: values.length });
+        }).filter(d => d !== null);
     };
 };
 /*
