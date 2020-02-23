@@ -13,7 +13,7 @@ export default ({ schemas, options }: FormatOptions) => {
   return (values: string[]) => {
     return instances.map((validate, i) => {
         if (_options.minHits && _options.minHits > 0 && _options.minHits > values.length) return null; // minimum sample size
-        return values.some((data: string) => !validate(data)) ? null : Object.assign({},_schemas[i], { hits: values.length });
+        return values.some((data: string) => !validate(data)) ? null : _schemas[i]; // Object.assign({},_schemas[i], { hits: values.length });
       }).filter(d => d !== null);
   };
 };
