@@ -1,35 +1,36 @@
 import Ajv from 'ajv';
 import { JSONSchema7 } from 'json-schema';
-const getInstances = ({ schemas, options }: { schemas: JSONSchema7[]; options: Ajv.Options }) => schemas.map(schema => new Ajv(options).compile(schema));
+const getInstances = ({ schemas, options }: { schemas: JSONSchema7[]; options?: Ajv.Options }) => schemas.map(schema => new Ajv(options||{format:'full'}).compile(schema));
 
-export const defaultFormats = require('ajv/lib/compile/formats')('full'); // https://github.com/epoberezkin/ajv/blob/master/lib/compile/formats.js
+//export const defaultFormats = require('ajv/lib/compile/formats')('full'); // https://github.com/epoberezkin/ajv/blob/master/lib/compile/formats.js
+export const defaultFormats = ['date', 'time', 'date-time', 'uri', 'url', 'email', 'ipv4', 'ipv6', 'uuid'];
 
-export type FormatOptions = { schemas?: JSONSchema7[]; options?: any };
+export type FormatterOptions = {
+   minHits: number;
+}
+export type FormatOptions = {
+  schemas?: JSONSchema7[];
+  options?: FormatterOptions;
+  ajvOptions?: Ajv.Options
+};
 
-export default ({ schemas, options }: FormatOptions) => {
-  const _schemas: JSONSchema7[] = schemas || ['date', 'time', 'date-time', 'uri', 'url', 'email', 'ipv4', 'ipv6', 'uuid'].map(format => ({ format }));
-  const _options: any = options || { format: 'fast', minHits: 0 };
-  const instances = getInstances({ schemas: _schemas, options: _options });
+export default ({ schemas, options, ajvOptions }: FormatOptions) => {
+  const _schemas: JSONSchema7[] = schemas || defaultFormats.map(format => ({ format }));
+  const _options: FormatterOptions = options || { minHits: 0 };
+  const {minHits} = _options;
+  const instances = getInstances({ schemas: _schemas, options: ajvOptions }); // create ajv instances
   return (values: string[]) => {
+    if (!values || !values.length) return []
+    if (minHits > 0 && minHits > values.length) return []; // abort on low sample Size
+
     return instances.map((validate, i) => {
-        if (_options.minHits && _options.minHits > 0 && _options.minHits > values.length) return null; // minimum sample size
-        return values.some((data: string) => !validate(data)) ? null : _schemas[i]; // Object.assign({},_schemas[i], { hits: values.length });
-      }).filter(d => d !== null);
+      return values.some((data: string) => !validate(data)) ? null : Object.assign({}, _schemas[i], { $comment: `${_schemas[i].$comment||''} matched:${values.length}` });
+      // _schemas[i]
+    }).filter(d => d !== null);
   };
 };
 
 /*
-const defaultFormats: string[] = ["date", "time", "date-time", "uri", "url", "email", "ipv4", "ipv6", "uuid"];
-const customSchemas: JSONSchema7[] = [
-  { pattern: "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$", $comment: "American Phone Number" },
-  { pattern: "^4[0-9]{12}(?:[0-9]{3})?$", $comment: "Visa Credit Card" },
-  { pattern: "^3[47][0-9]{13}$", $comment: "American Express Credit Card" },
-  { pattern: "^3(?:0[0-5]|[68][0-9])[0-9]{11}$", $comment: "Diners Credit Club",},
-  { pattern: "^DE([0-9a-zA-Z]\s?){20}$", $comment: "IBANN",},
-  ...defaultFormats.map(format => ({ format }))
-];
-const fastDetect = returnFormatDetector(customSchemas, );
-//const fastDetect = returnFormatDetector();
 console.log({
   urlsFormat: fastDetect(["https://www.example.com/foo/?bar=baz&inga=42&quux", "http://-.~_!$&'()*+,;=:%40:80%2f::::::@example.com", "http://foo.com/unicode_(✪)_in_parens", "https://github.com/epoberezkin/ajv/blob/master/lib/compile/formats.js"]),
 
