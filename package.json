@@ -1,6 +1,6 @@
 {
   "name": "detect-string-format",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "detect formats from array of String",
   "main": "./dist/index.js",
   "repository": {
@@ -21,7 +21,7 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
-    "ajv": "^6.11.0",
+    "ajv": "^6.12.0",
     "safe-regex": "^2.1.1",
     "ts-node-dev": "^1.0.0-pre.44",
     "tslint": "^5.20.1",
