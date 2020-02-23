@@ -26,8 +26,8 @@ const results = fastDetect(["0.0.0.0", "127.0.0.53", "127.0.0.1"]);
 ## defaults:
 
 ```ts
-const defaultFormats: JSONSchema7 = ["date", "time", "date-time", "uri", "url", "email", "ipv4", "ipv6", "uuid"].map(format => ({ format }));
-// you may want to add any of these: 
+const schemas: JSONSchema7 = ["date", "time", "date-time", "uri", "url", "email", "ipv4", "ipv6", "uuid"].map(format => ({ format }));
+// you may want to add any of these:
 // ["hostname", "json-pointer", "json-pointer-uri-fragment", "relative-json-pointer", "uri-reference", "regex"];
 
 ```
@@ -36,9 +36,9 @@ const defaultFormats: JSONSchema7 = ["date", "time", "date-time", "uri", "url", 
 - The following example matches a simple North American telephone number with an optional area code:
 
 ```ts
-const customSchemas: JSONSchema7[] = [
+const schemas: JSONSchema7[] = [
   {
-    pattern: "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$"
+    pattern: "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$", $comment: "Phone Number"
   },
   ...defaultFormats.map(format => ({ format }))
 ];
@@ -47,7 +47,7 @@ const customSchemas: JSONSchema7[] = [
 const options: Ajv.Options = { format: "full" };
 
 // custom schemas/formats:
-const fastDetect:Function = returnFormatDetector({schemas, options: { format: 'full' }}); // full|fast
+const fastDetect:Function = returnFormatDetector({schemas, ajvOptions: { format: 'full' }, options: { minHits: 0 }}); // full|
 ```
 
 

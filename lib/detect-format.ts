@@ -1,10 +1,11 @@
+/* eslint-disable prettier/prettier */
 import Ajv from 'ajv';
 import { JSONSchema7 } from 'json-schema';
 //export const defaultFormats = require('ajv/lib/compile/formats')('full'); // https://github.com/epoberezkin/ajv/blob/master/lib/compile/formats.js
 
-const getInstances = ({ schemas, options }: { schemas: JSONSchema7[]; options?: Ajv.Options }) => schemas.map(schema => new Ajv(options || { format: 'full' }).compile(schema));
+const getInstances = ({ schemas, options }: { schemas: JSONSchema7[]; options?: Ajv.Options }): Function[] => schemas.map(schema => new Ajv(options || { format: 'full' }).compile(schema));
 
-export const defaultFormats = ['date', 'time', 'date-time', 'uri', 'url', 'email', 'ipv4', 'ipv6', 'uuid'];
+export const defaultFormats = ['date', 'time', 'date-time', 'uri', 'email', 'ipv4', 'ipv6', 'uuid'];
 
 export type FormatterOptions = {
   minHits: number;
@@ -15,18 +16,22 @@ export type FormatOptions = {
   ajvOptions?: Ajv.Options;
 };
 
-export default ({ schemas, options, ajvOptions }: FormatOptions) => {
+export default ({ schemas, options, ajvOptions }: FormatOptions): Function => {
   const _schemas: JSONSchema7[] = schemas || defaultFormats.map(format => ({ format }));
   const _options: FormatterOptions = options || { minHits: 0 };
   const { minHits } = _options;
   const instances = getInstances({ schemas: _schemas, options: ajvOptions }); // create ajv instances
-  return (values: string[]) => {
+  return (values: string[]): object => {
     if (!values || !values.length) return [];
     if (minHits > 0 && minHits > values.length) return []; // abort on low sample Size
 
     return instances
       .map((validate, i) => {
-        return values.some((data: string) => !validate(data)) ? null : Object.assign({}, _schemas[i], { $comment: `${ _schemas[i].$comment || _schemas[i].format} matched:${values.length}` });
+        return values.some((data: string) => !validate(data))
+          ? null
+          : Object.assign({}, _schemas[i], {
+              $comment: `${_schemas[i].$comment || _schemas[i].format} matched:${values.length}`
+            });
       })
       .filter(d => d !== null);
   };

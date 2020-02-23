@@ -3,10 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+/* eslint-disable prettier/prettier */
 const ajv_1 = __importDefault(require("ajv"));
 //export const defaultFormats = require('ajv/lib/compile/formats')('full'); // https://github.com/epoberezkin/ajv/blob/master/lib/compile/formats.js
 const getInstances = ({ schemas, options }) => schemas.map(schema => new ajv_1.default(options || { format: 'full' }).compile(schema));
-exports.defaultFormats = ['date', 'time', 'date-time', 'uri', 'url', 'email', 'ipv4', 'ipv6', 'uuid'];
+exports.defaultFormats = ['date', 'time', 'date-time', 'uri', 'email', 'ipv4', 'ipv6', 'uuid'];
 exports.default = ({ schemas, options, ajvOptions }) => {
     const _schemas = schemas || exports.defaultFormats.map(format => ({ format }));
     const _options = options || { minHits: 0 };
@@ -19,7 +20,11 @@ exports.default = ({ schemas, options, ajvOptions }) => {
             return []; // abort on low sample Size
         return instances
             .map((validate, i) => {
-            return values.some((data) => !validate(data)) ? null : Object.assign({}, _schemas[i], { $comment: `${_schemas[i].$comment || _schemas[i].format} matched:${values.length}` });
+            return values.some((data) => !validate(data))
+                ? null
+                : Object.assign({}, _schemas[i], {
+                    $comment: `${_schemas[i].$comment || _schemas[i].format} matched:${values.length}`
+                });
         })
             .filter(d => d !== null);
     };
