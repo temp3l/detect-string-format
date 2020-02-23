@@ -26,6 +26,10 @@ stringFormats.filter(s=>s.pattern).map( ({pattern, $comment}:any):void => {
   if(!isSafeRegex(pattern, {limit:25})) console.log({notSafe: $comment });
 });
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+// const isSecure = ajv.compile(require('ajv/lib/refs/json-schema-secure.json'));
+// if(!isSecure(schema)) errors.push(new Error('Insecure Schema detected!!!'));
+
 const fastDetect:Function = returnFormatDetector({ schemas: stringFormats, ajvOptions: { format: 'full' }, options: { minHits: 0 }}); // full|fast
 // There are two modes of format validation: fast and full. This mode affects formats date, time, date-time, uri, uri-reference, email, and hostname.
 // "full" - more restrictive and slow validation. E.g., 25:00:00 and 2015/14/33 will be invalid time and date in 'full' mode but it will be valid in 'fast' mode.
