@@ -27,15 +27,12 @@ export default ({ schemas, options, ajvOptions }: FormatOptions): Function => {
 
     return instances
       .map((validate, i) => {
-        return values.some((data: string) => !validate(data))
-          ? null
-          : Object.assign({}, _schemas[i], {
-              $comment: `${_schemas[i].$comment || _schemas[i].format} matched:${values.length}`
-            });
+        return values.some((data: string) => !validate(data)) ? null : _schemas[i]
       })
       .filter(d => d !== null);
   };
 };
+//Object.assign({}, _schemas[i], { $comment: `${_schemas[i].$comment || _schemas[i].format} matched:${values.length}`});
 
 /*
 console.log({

@@ -20,15 +20,12 @@ exports.default = ({ schemas, options, ajvOptions }) => {
             return []; // abort on low sample Size
         return instances
             .map((validate, i) => {
-            return values.some((data) => !validate(data))
-                ? null
-                : Object.assign({}, _schemas[i], {
-                    $comment: `${_schemas[i].$comment || _schemas[i].format} matched:${values.length}`
-                });
+            return values.some((data) => !validate(data)) ? null : _schemas[i];
         })
             .filter(d => d !== null);
     };
 };
+//Object.assign({}, _schemas[i], { $comment: `${_schemas[i].$comment || _schemas[i].format} matched:${values.length}`});
 /*
 console.log({
   urlsFormat: fastDetect(["https://www.example.com/foo/?bar=baz&inga=42&quux", "http://-.~_!$&'()*+,;=:%40:80%2f::::::@example.com", "http://foo.com/unicode_(✪)_in_parens", "https://github.com/epoberezkin/ajv/blob/master/lib/compile/formats.js"]),
