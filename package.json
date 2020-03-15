@@ -1,6 +1,6 @@
 {
   "name": "detect-string-format",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "detect formats from array of String",
   "main": "./dist/index.js",
   "repository": {
@@ -21,14 +21,14 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
-    "ajv": "^6.12.0",
-    "tslint": "^5.20.1",
-    "typescript": "^3.7.4"
-  },
+    "ajv": "^6.12.0"
+    },
   "devDependencies": {
     "@types/node": "^13.1.6",
     "@typescript-eslint/eslint-plugin": "^2.15.0",
-    "@typescript-eslint/parser": "^2.15.0",
+    "@typescript-eslint/parser": "^2.15.0", 
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.4",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.9.0",
     "eslint-plugin-prettier": "^3.1.2",
