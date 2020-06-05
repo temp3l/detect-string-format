@@ -20,7 +20,7 @@ exports.default = ({ schemas, options, ajvOptions }) => {
             return []; // abort on low sample Size
         return instances
             .map((validate, i) => {
-            return values.some((data) => !validate(data)) ? null : _schemas[i];
+            return values.some((data) => (typeof (data) !== 'string' || !validate(data))) ? null : _schemas[i];
         })
             .filter(d => d !== null);
     };
